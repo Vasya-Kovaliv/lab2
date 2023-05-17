@@ -1,46 +1,25 @@
-class BigInt:
-    def init(self, num_str):
-        self.arr = []
-        for i in range(len(num_str)-1, -1, -8):
-            byte = num_str[max(i-7, 0):i+1]
-            self.arr.append(int(byte, 16))
-    
-    def str(self):
-        num_str = ""
-        for byte in self.arr[::-1]:
-            num_str += hex(byte)[2:].zfill(8)
-        return num_str.upper()
-    
-    def set_number(self, num_str):
-        self.arr = []
-        for i in range(len(num_str)-1, -1, -8):
-            byte = num_str[max(i-7, 0):i+1]
-            self.arr.append(int(byte, 16))
-    
-    def get_number(self):
-        num_str = ""
-        for byte in self.arr[::-1]:
-            num_str += hex(byte)[2:].zfill(8)
-        return num_str.upper()
-    
-    
-# автоматичне тестування
-num1 = "1234567890ABCDEF"
-big_num1 = BigInt(num1)
-assert big_num1.get_number() == num1
+class BigNumber:
+    def __init__(self):
+        self.number = []
 
-num2 = "FEDCBA0987654321"
-big_num2 = BigInt(num2)
-assert big_num2.get_number() == num2
+    def set_number_from_hex(self, hex_string):
+        self.number = []
+        hex_string = hex_string.strip()
+        hex_string = hex_string.replace("0x", "")  
+        if len(hex_string) % 2 != 0:  
+            hex_string = "0" + hex_string  
 
-num3 = "1"
-big_num3 = BigInt(num3)
-assert big_num3.get_number() == num3
+        for i in range(0, len(hex_string), 2):
+            byte = hex_string[i:i + 2]
+            self.number.append(int(byte, 16))
 
-num4 = "100000000"
-big_num4 = BigInt(num4)
-assert big_num4.get_number() == num4
+    def get_number_as_hex(self):
+        hex_string = ""
+        for byte in self.number:
+            hex_string += format(byte, "02x")
+        return hex_string
 
-num5 = "1234567890ABCDEF1234567890ABCDEF"
-big_num5 = BigInt(num5)
-assert big_num5.get_number() == num5
+number = BigNumber()
+number.set_number_from_hex("A1B2C3D4E5F6")
+print(number.get_number_as_hex())
+
